@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">29th_Mar_Android_Project</string>
     <string name="splash_activity_title"> Countries Wikipedia</string>
+    <string name="country_flag">India</string>
+    <string name="flag">Flag</string>
+    <string name="name">Name</string>
+    <string name="capital">Capital</string>
+    <string name="currency">Currency</string>
+    <string name="population">Population</string>
 </resources>

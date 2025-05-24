@@ -8,7 +8,7 @@ import com.example.a29th_mar_android_project.continent_detail.adapter.uidata.Con
 
 class ContinentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val continentNameTextView: TextView =
-        itemView.findViewById(R.id.text_view_continent_name)
+        itemView.findViewById(R.id.text_view_country_name)
 
     fun bind(continent: Continent, onItemClick: (Continent) -> Unit) {
         continentNameTextView.text = continent.name

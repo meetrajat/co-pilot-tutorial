@@ -1,5 +1,6 @@
 package com.example.a29th_mar_android_project.countries
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -15,6 +16,7 @@ import com.example.a29th_mar_android_project.countries.repo.CountriesRepo
 import com.example.a29th_mar_android_project.network.apollo.base.ApolloClientProvider
 import com.example.a29th_mar_android_project.network.countries.network.CountriesNetworkService
 import com.example.a29th_mar_android_project.countries.uidata.Country
+import com.example.a29th_mar_android_project.countrydetail.CountriesDetailActivity
 
 class CountriesActivity : AppCompatActivity() {
 
@@ -51,7 +53,11 @@ class CountriesActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = CountriesAdapter(emptyList())
+        adapter = CountriesAdapter(emptyList()){
+            val intent = Intent(recyclerView.context, CountriesDetailActivity::class.java)
+            intent.putExtra("COUNTRY_CODE", "AE")
+            recyclerView.context.startActivity(intent)
+        }
         recyclerView.adapter = adapter
     }
 

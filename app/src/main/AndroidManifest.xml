@@ -17,6 +17,7 @@
             android:name=".continent_detail.ContinentDetailActivity"
             android:exported="false" />
         <activity android:name=".countries.CountriesActivity"/>
+        <activity android:name=".countrydetail.CountriesDetailActivity"/>
         <activity
             android:name=".home.HomeActivity"
             android:exported="false" />

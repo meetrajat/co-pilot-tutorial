@@ -8,13 +8,14 @@ import com.example.a29th_mar_android_project.countries.uidata.Country
 import com.example.a29th_mar_android_project.countries.viewholder.CountryViewHolder
 
 class CountriesAdapter(
-    private var countries: List<Country>
+    private var countries: List<Country>,
+    private val onCountryClick: (Country) -> Unit
 ) : RecyclerView.Adapter<CountryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.continent_detail_item, parent, false)
-        return CountryViewHolder(view)
+        return CountryViewHolder(view,onCountryClick)
     }
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
