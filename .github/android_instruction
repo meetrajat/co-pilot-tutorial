@@ -1,0 +1,73 @@
+# Copilot Instructions
+
+## Project Overview
+We are building a simple task management web application. Users should be able to:
+- View a list of tasks
+- Add new tasks
+- Mark tasks as completed
+- Delete tasks
+
+## Stack
+- Frontend: React (with Hooks)
+- Styling: Tailwind CSS
+- Backend: Node.js with Express
+- Database: MongoDB (via Mongoose)
+
+## File Structure
+- `/client`: Frontend React app
+- `/server`: Backend API
+- Use `.env` files for environment variables
+
+## Requirements
+- Tasks have the following fields:
+  - `title` (string, required)
+  - `description` (string, optional)
+  - `completed` (boolean, default false)
+  - `createdAt` (date, auto-generated)
+
+## Implementation Notes
+- Use functional components only
+- Prefer `async/await` over promises
+- Use Axios for HTTP requests
+- Set up basic routing with React Router (Home, About)
+- Backend should expose RESTful endpoints (`GET /tasks`, `POST /tasks`, etc.)
+- Use CORS middleware in Express
+
+## Stretch Goals
+- Add user authentication using JWT
+- Enable drag-and-drop task sorting (React Beautiful DnD)
+- Deploy with Docker and GitHub Actions
+
+## Other Instructions
+- Write clean, commented code
+- Use ESLint + Prettier for formatting
+- Include a `README.md` with setup instructions
+
+## Tasks to Get Started
+- Initialize the backend project with Express
+- Set up Mongoose models and connect to MongoDB
+- Create a basic React app with Tailwind CSS
+
+## Requirements
+- ViewModels should not contain business logic; delegate to use cases.
+- Repository interfaces go in `domain`, implementations in `data`.
+- Use sealed classes or `Result` wrappers to handle UI states (loading/success/error).
+- Use Hilt to inject ViewModels and repositories.
+- GraphQL errors should be handled gracefully and propagated to UI.
+
+## Tasks to Get Started
+- Set up Apollo client in the data layer.
+- Create a sample GraphQL query for fetching a list of items.
+- Define the corresponding repository and use case.
+- Bind everything to a simple UI screen via ViewModel.
+
+## Guidelines
+- Use Kotlin idioms and coroutines.
+- Write modular, testable code with proper separation of concerns.
+- Maintain consistent naming conventions (`SomeUseCase`, `SomeRepositoryImpl`, etc.).
+- Write unit tests for ViewModels and use cases where applicable.
+
+## Stretch Goals
+- Add offline support with caching.
+- Add a favorites feature backed by local storage.
+- Implement pagination for list queries.
