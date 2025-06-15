@@ -17,23 +17,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a29th_mar_android_project.continent_detail.adapter.ContinentAdapter
 import com.example.a29th_mar_android_project.continent_detail.adapter.uidata.Continent
-import com.example.a29th_mar_android_project.continent_detail.network.ContinentNetworkService
+import com.example.a29th_mar_android_project.continent_detail.network.remote.ContinentRemoteDataSource
 import com.example.a29th_mar_android_project.continent_detail.repo.ContinentRepo
-import com.example.a29th_mar_android_project.continent_detail.repo.ContinentRepoGQLImpl
+import com.example.a29th_mar_android_project.continent_detail.network.remote.ContinentRepoGQLImpl
 import com.example.a29th_mar_android_project.countries.CountriesActivity
-import com.example.a29th_mar_android_project.countries.CountriesViewModel
-import com.example.a29th_mar_android_project.countries.repo.CountriesRepo
 import com.example.a29th_mar_android_project.network.apollo.base.ApolloClientProvider
-import com.example.a29th_mar_android_project.network.countries.network.CountriesNetworkService
 
 class ContinentDetailActivity : AppCompatActivity() {
 
     private val continentDetailViewModel : ContinentDetailViewModel by viewModels(){
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                val apolloClient = ApolloClientProvider.apolloClient
                 val continentRepoGQLImpl = ContinentRepoGQLImpl()
-                val repo = ContinentRepo(continentRepoGQLImpl)
+                val continentRemoteDataSource = ContinentRemoteDataSource(continentRepoGQLImpl);
+                val repo = ContinentRepo(continentRemoteDataSource)
                 return ContinentDetailViewModel(repo) as T
             }
         }

@@ -1,4 +1,4 @@
-package com.example.a29th_mar_android_project.continent_detail.repo
+package com.example.a29th_mar_android_project.continent_detail.network.remote
 
 import com.example.a29th_mar_android_project.network.apollo.base.GraphQLNetworkServiceImpl
 
