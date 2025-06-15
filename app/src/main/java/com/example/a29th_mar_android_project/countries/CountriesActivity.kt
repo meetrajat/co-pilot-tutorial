@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a29th_mar_android_project.R
 import com.example.a29th_mar_android_project.countries.adapter.CountriesAdapter
+import com.example.a29th_mar_android_project.countries.network.remote.CountriesRemoteDataSource
+import com.example.a29th_mar_android_project.countries.network.remote.CountriesRemoteGQLImpl
 import com.example.a29th_mar_android_project.countries.repo.CountriesRepo
-import com.example.a29th_mar_android_project.network.apollo.base.ApolloClientProvider
-import com.example.a29th_mar_android_project.network.countries.network.CountriesNetworkService
 import com.example.a29th_mar_android_project.countries.uidata.Country
 import com.example.a29th_mar_android_project.countrydetail.CountriesDetailActivity
 
@@ -28,9 +28,9 @@ class CountriesActivity : AppCompatActivity() {
     private val viewModel: CountriesViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                val apolloClient = ApolloClientProvider.apolloClient
-                val networkService = CountriesNetworkService(apolloClient)
-                val repo = CountriesRepo(networkService)
+                val countriesRemoteGQLImpl = CountriesRemoteGQLImpl()
+                val countriesRemoteDataSource = CountriesRemoteDataSource(countriesRemoteGQLImpl);
+                val repo = CountriesRepo(countriesRemoteDataSource)
                 return CountriesViewModel(repo) as T
             }
         }
