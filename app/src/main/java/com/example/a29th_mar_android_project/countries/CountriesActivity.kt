@@ -18,6 +18,7 @@ import com.example.a29th_mar_android_project.countries.network.remote.CountriesR
 import com.example.a29th_mar_android_project.countries.repo.CountriesRepo
 import com.example.a29th_mar_android_project.countries.uidata.Country
 import com.example.a29th_mar_android_project.countrydetail.CountriesDetailActivity
+import com.example.a29th_mar_android_project.network.apollo.cache.GraphQLCacheManager
 
 class CountriesActivity : AppCompatActivity() {
 
@@ -30,8 +31,9 @@ class CountriesActivity : AppCompatActivity() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 val countriesRemoteGQLImpl = CountriesRemoteGQLImpl()
+                val cacheManager = GraphQLCacheManager(applicationContext)
                 val countriesRemoteDataSource = CountriesRemoteDataSource(countriesRemoteGQLImpl);
-                val repo = CountriesRepo(countriesRemoteDataSource)
+                val repo = CountriesRepo(countriesRemoteDataSource,cacheManager)
                 return CountriesViewModel(repo) as T
             }
         }

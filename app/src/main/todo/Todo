@@ -1,0 +1,4 @@
+1- Read all todos
+2- Check with co-pilot code which can be error prone and needs to be fixed or can throw exceptions
+3- Change logic for request key, currently it is using hardcoded value in repo class"
+4- check offline logic curently all classes are added but logic is hardcoded

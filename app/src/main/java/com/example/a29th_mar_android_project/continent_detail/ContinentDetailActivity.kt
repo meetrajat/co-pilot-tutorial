@@ -1,5 +1,6 @@
 package com.example.a29th_mar_android_project.continent_detail
 
+import ContinentRepo
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -18,9 +19,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.a29th_mar_android_project.continent_detail.adapter.ContinentAdapter
 import com.example.a29th_mar_android_project.continent_detail.adapter.uidata.Continent
 import com.example.a29th_mar_android_project.continent_detail.network.remote.ContinentRemoteDataSource
-import com.example.a29th_mar_android_project.continent_detail.repo.ContinentRepo
 import com.example.a29th_mar_android_project.continent_detail.network.remote.ContinentRepoGQLImpl
 import com.example.a29th_mar_android_project.countries.CountriesActivity
+import com.example.a29th_mar_android_project.network.apollo.cache.GraphQLCacheManager
 
 class ContinentDetailActivity : AppCompatActivity() {
 
@@ -28,8 +29,9 @@ class ContinentDetailActivity : AppCompatActivity() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 val continentRepoGQLImpl = ContinentRepoGQLImpl()
+                val cacheManager = GraphQLCacheManager(this@ContinentDetailActivity);
                 val continentRemoteDataSource = ContinentRemoteDataSource(continentRepoGQLImpl);
-                val repo = ContinentRepo(continentRemoteDataSource)
+                val repo = ContinentRepo(continentRemoteDataSource,cacheManager)
                 return ContinentDetailViewModel(repo) as T
             }
         }

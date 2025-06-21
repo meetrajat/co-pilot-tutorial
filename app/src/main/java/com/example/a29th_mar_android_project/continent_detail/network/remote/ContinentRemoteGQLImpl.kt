@@ -1,5 +1,6 @@
 package com.example.a29th_mar_android_project.continent_detail.network.remote
 
+import android.content.Context
 import com.example.a29th_mar_android_project.network.apollo.base.GraphQLNetworkServiceImpl
 
 class ContinentRepoGQLImpl: GraphQLNetworkServiceImpl() {

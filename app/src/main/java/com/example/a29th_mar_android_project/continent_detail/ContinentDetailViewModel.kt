@@ -1,9 +1,9 @@
 package com.example.a29th_mar_android_project.continent_detail
 
+import ContinentRepo
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.a29th_mar_android_project.continent_detail.repo.ContinentRepo
 import kotlinx.coroutines.launch
 
 class ContinentDetailViewModel(private val continentRepo: ContinentRepo) : ViewModel(){
