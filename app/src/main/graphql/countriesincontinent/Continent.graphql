@@ -1,5 +1,6 @@
 query Continent {
  continents{
-  name
+  name,
+  code
  }
 }

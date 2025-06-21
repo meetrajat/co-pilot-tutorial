@@ -42,9 +42,7 @@ class CountriesDetailActivity : AppCompatActivity() {
 
         viewModel.countryDetail.observe(this) { detail ->
             val details = listOf(
-                R.drawable.ic_flag to detail.flag,
-                R.drawable.ic_name to detail.name,
-                R.drawable.ic_capital to detail.capital
+                Triple(detail.flag, detail.name, detail.capital)
             )
             recyclerView.adapter = CountryDetailAdapter(details)
         }

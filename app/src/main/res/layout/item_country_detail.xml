@@ -1,23 +1,43 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp"
-    android:background="@color/rowBackground">
-
-    <ImageView
-        android:id="@+id/ivFlag"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        android:contentDescription="@string/flag" />
+    android:background="@drawable/item_background"
+    android:padding="@dimen/item_margin">
 
     <TextView
-        android:id="@+id/tvAttribute"
-        android:layout_width="wrap_content"
+        android:id="@+id/txtViewCountryFlag"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.5"/>
+
+    <TextView
+        android:id="@+id/txtViewCountryName"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/txtViewCountryFlag"
+        app:layout_constraintTop_toTopOf="@id/txtViewCountryFlag"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/item_image_margin_end"/>
+
+    <TextView
+        android:id="@+id/txtViewCountryCapital"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:textSize="16sp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"/>
-</LinearLayout>
+        app:layout_constraintStart_toStartOf="@id/txtViewCountryName"
+        app:layout_constraintEnd_toEndOf="@id/txtViewCountryName"
+        app:layout_constraintTop_toBottomOf="@id/txtViewCountryName"
+        android:layout_marginTop="@dimen/item_text_margin_top"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,10 +7,10 @@ import com.example.a29th_mar_android_project.R
 
 /**
  * Adapter for displaying country details in a RecyclerView.
- * @param details List of pairs of icon resource and value string.
+ * @param details List of triples of icon resource, country name, and country capital.
  */
 class CountryDetailAdapter(
-    private val details: List<Pair<Int, String>>
+    private val details: List<Triple<String, String, String>>
 ) : RecyclerView.Adapter<CountryDetailViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryDetailViewHolder {
@@ -20,9 +20,11 @@ class CountryDetailAdapter(
     }
 
     override fun onBindViewHolder(holder: CountryDetailViewHolder, position: Int) {
-        val (iconRes, value) = details[position]
-        holder.icon.setImageResource(iconRes)
-        holder.value.text = value
+        val (flagEmoji, countryName, countryCapital) = details[position]
+        // Set emoji as text in a TextView instead of using ImageView
+        holder.countryFlagTextView.text = flagEmoji
+        holder.countryName.text = countryName
+        holder.countryCapital.text = countryCapital
     }
 
     override fun getItemCount() = details.size

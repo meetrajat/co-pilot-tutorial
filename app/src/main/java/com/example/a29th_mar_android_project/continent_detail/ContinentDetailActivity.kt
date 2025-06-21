@@ -21,7 +21,6 @@ import com.example.a29th_mar_android_project.continent_detail.network.remote.Con
 import com.example.a29th_mar_android_project.continent_detail.repo.ContinentRepo
 import com.example.a29th_mar_android_project.continent_detail.network.remote.ContinentRepoGQLImpl
 import com.example.a29th_mar_android_project.countries.CountriesActivity
-import com.example.a29th_mar_android_project.network.apollo.base.ApolloClientProvider
 
 class ContinentDetailActivity : AppCompatActivity() {
 
@@ -57,7 +56,7 @@ class ContinentDetailActivity : AppCompatActivity() {
     }
 
     fun makeContientAPICall(){
-        continentDetailViewModel.fetchCountriesInContinent("EU");
+        continentDetailViewModel.fetchContinent("");
     }
 
     fun setupProgressBar(){
@@ -78,7 +77,7 @@ class ContinentDetailActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view_continent_detail)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = ContinentAdapter(emptyList()){
-            continentDetailViewModel.fetchCountriesInContinent(it.name)
+            continentDetailViewModel.fetchContinent(it.name)
         }
         recyclerView.adapter = adapter
 
@@ -86,16 +85,16 @@ class ContinentDetailActivity : AppCompatActivity() {
 
     private fun observeContinents() {
         continentDetailViewModel.continentsLiveData.observe(this) { listContinents ->
-            val continentList = listContinents.map { Continent(it.name) }
+            val continentList = listContinents.map { Continent(it.name,it.code) }
             adapter = ContinentAdapter(continentList){
                 Toast.makeText(this, it.name, Toast.LENGTH_SHORT).show();
                 val intent = Intent(this, CountriesActivity::class.java).apply {
-                    putExtra("CONTINENT_CODE", it.name)
+                    putExtra("CONTINENT_NAME", it.name)
+                    putExtra("CONTINENT_CODE", it.code)
                 }
                 startActivity(intent)
             }
             recyclerView.adapter = adapter
         }
     }
-
 }

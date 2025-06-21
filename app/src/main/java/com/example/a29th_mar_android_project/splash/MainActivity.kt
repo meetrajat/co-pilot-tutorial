@@ -10,7 +10,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.a29th_mar_android_project.R
 import com.example.a29th_mar_android_project.continent_detail.ContinentDetailActivity
-import com.example.a29th_mar_android_project.home.HomeActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -19,9 +19,6 @@
         <activity android:name=".countries.CountriesActivity"/>
         <activity android:name=".countrydetail.CountriesDetailActivity"/>
         <activity
-            android:name=".home.HomeActivity"
-            android:exported="false" />
-        <activity
             android:name=".splash.MainActivity"
             android:exported="true">
             <intent-filter>

@@ -15,7 +15,7 @@ class CountriesRemoteDataSource(val countriesRemoteGQLImpl: CountriesRemoteGQLIm
                 val countries = response.data?.continent?.countries
                 if (countries != null) {
                     for (country in countries) {
-                        list.add(Country(country.name))
+                        list.add(Country(country.name, country.code))
                     }
                 }
             }

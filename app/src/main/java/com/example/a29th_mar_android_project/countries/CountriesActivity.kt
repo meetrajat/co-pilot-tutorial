@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -48,14 +49,23 @@ class CountriesActivity : AppCompatActivity() {
         observeViewModel()
 
         // Fetch countries
-        viewModel.fetchCountriesByContinent("EU")
+        val (continentName, continentCode) = extractContinentFieldsFromIntent()
+        if (continentCode != null) {
+            viewModel.fetchCountriesByContinent(continentCode)
+        }else{
+            // Handle the case where continentCode is null
+            progressBar.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            // Optionally, show a message to the user
+            Toast.makeText(this, "Continent code is null", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = CountriesAdapter(emptyList()){
             val intent = Intent(recyclerView.context, CountriesDetailActivity::class.java)
-            intent.putExtra("COUNTRY_CODE", "AE")
+            intent.putExtra("COUNTRY_CODE", it.countryCode)
             recyclerView.context.startActivity(intent)
         }
         recyclerView.adapter = adapter
@@ -65,7 +75,7 @@ class CountriesActivity : AppCompatActivity() {
         viewModel.countriesLiveData.observe(this) { response ->
             progressBar.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
-            val countries = response.map { Country(it.name) } ?: emptyList()
+            val countries = response.map { Country(it.name,it.countryCode) } ?: emptyList()
             adapter.updateCountries(countries)
         }
 
@@ -73,5 +83,11 @@ class CountriesActivity : AppCompatActivity() {
             progressBar.visibility = View.GONE
             // Handle error (e.g., show a Toast or Snackbar)
         }
+    }
+
+    private fun extractContinentFieldsFromIntent(): Pair<String?, String?> {
+        val continentName = intent.getStringExtra("CONTINENT_NAME")
+        val continentCode = intent.getStringExtra("CONTINENT_CODE")
+        return Pair(continentName, continentCode)
     }
 }
