@@ -1,6 +1,7 @@
 package com.example.a29th_mar_android_project.network.apollo.cache
 
 import android.content.Context
+import android.net.NetworkRequest
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Query
 import kotlinx.coroutines.Dispatchers
@@ -14,23 +15,16 @@ import kotlinx.serialization.KSerializer
 class GraphQLCacheManager(private val context: Context) {
     private val cacheDao by lazy { GraphQLCacheDatabaseProvider.getInstance(context).graphQLCacheDao() }
 
-    fun getCachedResponse(requestKey: String): String {
-        return when (requestKey) {
-            "Continent" -> "{\"data\":{\"continents\":[{\"code\":\"AS\",\"name\":\"Asia\"},{\"code\":\"EU\",\"name\":\"Europe\"}]}}"
-            "Country" -> "{\"data\":{\"country\":{\"name\":\"India\",\"capital\":\"New Delhi\",\"emoji\":\"🇮🇳\",\"currency\":\"INR\",\"phone\":\"91\"}}}"
-            else -> ""
-        }
+    suspend fun getCachedResponse(networkRequestType: Int): String = withContext(Dispatchers.IO) {
+        val cacheEntity = cacheDao.getCacheByKey(networkRequestType)
+        return@withContext cacheEntity?.response ?: ""
     }
 
-    suspend fun cacheResponse(requestKey: String) {
-        val dummyJson = when (requestKey) {
-            "Continent" -> "{\"data\":{\"continents\":[{\"code\":\"AS\",\"name\":\"Asia\"},{\"code\":\"EU\",\"name\":\"Europe\"}]}}"
-            "Country" -> "{\"data\":{\"country\":{\"name\":\"India\",\"capital\":\"New Delhi\",\"emoji\":\"🇮🇳\",\"currency\":\"INR\",\"phone\":\"91\"}}}"
-            else -> null
-        }
+    suspend fun cacheResponse(requestKey: String,networkRequestType: Int) {
+        val dummyJson = requestKey;
         dummyJson?.let {
             cacheDao.insertOrUpdateCache(GraphQLCacheEntity(
-                requestKey = requestKey,
+                requestKey = networkRequestType,
                 response = it,
                 timestamp = System.currentTimeMillis()
             ))

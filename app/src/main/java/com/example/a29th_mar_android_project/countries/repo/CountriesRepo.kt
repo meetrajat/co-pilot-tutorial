@@ -5,10 +5,10 @@ import com.example.a29th_mar_android_project.countries.network.remote.CountriesR
 import com.example.a29th_mar_android_project.countries.network.remote.CountriesRemoteGQLImpl
 import com.example.a29th_mar_android_project.countries.uidata.Country
 import com.example.a29th_mar_android_project.network.apollo.cache.GraphQLCacheManager
-import com.apollographql.apollo3.api.Query
 import com.apollographql.apollo3.api.ApolloResponse
-import com.apollographql.apollo3.api.variables
 import com.example.a29th_mar_android_project.CountriesByContinentQuery
+import com.example.a29th_mar_android_project.util.AppUtils
+import com.example.a29th_mar_android_project.util.BuildJsonObject
 import org.json.JSONObject
 
 class CountriesRepo(
@@ -24,28 +24,24 @@ class CountriesRepo(
         }
     }
 
+    private suspend fun storeResponseInCache(response: ApolloResponse<CountriesByContinentQuery.Data>, networkRequestKey: Int) {
+        BuildJsonObject.buildCountriesJson(response)?.let { jsonResponse ->
+            cacheManager.cacheResponse(jsonResponse, networkRequestKey)
+        }
+    }
+
     suspend fun getCountriesByContinent(continentCode: String): MutableList<Country> {
         val query = CountriesByContinentQuery(continentCode)
-        val requestKey = "Countries";
-        /*query::class.simpleName + query.variables().toString()*/
-        val cachedResponse: String =
-            cacheManager.getCachedResponse("Countries")
-        if (cachedResponse != null) {
-            val json = JSONObject(cachedResponse)
-            val continents = json.getJSONObject("data")
-                .getJSONArray("continents")
-            val countriesList = mutableListOf<Country>()
-            for (i in 0 until continents.length()) {
-                val countryJson = continents.getJSONObject(i)
-                val name = countryJson.getString("name")
-                val code = countryJson.getString("code")
-                countriesList.add(Country(name, code))
-            }
-            return countriesList
+        val networkRequestKey = AppUtils.getUniqueCountryCacheKey(continentCode)
+        val cachedResponse: String = cacheManager.getCachedResponse(networkRequestKey)
+
+        if (cachedResponse.isNotEmpty()) {
+            return BuildJsonObject.parseCountriesFromJson(cachedResponse)
         }
+
         // Not in cache, fetch from network
         val response = remoteDataSource.countriesRemoteGQLImpl.executeQuery(query)
-        cacheManager.cacheResponse(requestKey)
+        storeResponseInCache(response, networkRequestKey)
         val countries = response.data?.continent?.countries
         return countries?.map { Country(it.name, it.code) }?.toMutableList() ?: mutableListOf()
     }

@@ -9,7 +9,7 @@ import androidx.room.Delete
 @Dao
 interface GraphQLCacheDao {
     @Query("SELECT * FROM graphql_cache WHERE requestKey = :requestKey LIMIT 1")
-    suspend fun getCacheByKey(requestKey: String): GraphQLCacheEntity?
+    suspend fun getCacheByKey(requestKey: Int): GraphQLCacheEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateCache(entity: GraphQLCacheEntity)

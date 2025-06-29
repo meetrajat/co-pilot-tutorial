@@ -5,6 +5,8 @@ import com.example.a29th_mar_android_project.ContinentQuery
 import com.example.a29th_mar_android_project.continent_detail.ContinentsServer
 import com.example.a29th_mar_android_project.continent_detail.network.remote.ContinentRemoteDataSource
 import com.example.a29th_mar_android_project.continent_detail.network.remote.ContinentRepoGQLImpl
+import com.example.a29th_mar_android_project.util.AppUtils
+import com.example.a29th_mar_android_project.util.BuildJsonObject
 
 class ContinentRepo(
     private val remoteDataSource: ContinentRemoteDataSource,
@@ -21,28 +23,25 @@ class ContinentRepo(
 
     suspend fun getContinent(continentCode: String): MutableList<ContinentsServer> {
         val query = ContinentQuery() // If ContinentQuery takes parameters, pass them here
-        val requestKey = "Continent"/*query::class.simpleName + query.variables().toString()*/
+        val networkRequestKey = AppUtils.getNetworkRequestKey(AppUtils.REQUEST_NAME_CONTINENT) // Update requestKey if needed
         val cachedResponse: String =
-            cacheManager.getCachedResponse(requestKey)
-        if (cachedResponse != null ) {
-            val continentsList = mutableListOf<ContinentsServer>()
+            cacheManager.getCachedResponse(networkRequestKey)
+        if (cachedResponse != null && cachedResponse.isNotEmpty()) {
             try {
-                val json = org.json.JSONObject(cachedResponse)
-                val continentsArray = json.getJSONObject("data").getJSONArray("continents")
-                for (i in 0 until continentsArray.length()) {
-                    val continentJson = continentsArray.getJSONObject(i)
-                    val code = continentJson.optString("code", "")
-                    val name = continentJson.optString("name", "")
-                    continentsList.add(ContinentsServer(code, name))
-                }
-                return continentsList
+                return BuildJsonObject.parseContinentsFromJson(cachedResponse)
             } catch (e: Exception) {
                 // handle parse error, fallback to network
             }
         }
         // Not in cache, fetch from network
         val response = remoteDataSource.continentRepoGQLImpl.executeQuery(query)
-        cacheManager.cacheResponse(requestKey)
+
+        // Store the response in database
+        response.data?.let { data ->
+            val jsonResponse = BuildJsonObject.buildContinentsJson(data.continents)
+            cacheManager.cacheResponse(jsonResponse, networkRequestKey)
+        }
+
         val continents = response.data?.continents
         return continents?.mapNotNull {
             if (it != null && it.name != null) ContinentsServer(it.code, it.name) else null
