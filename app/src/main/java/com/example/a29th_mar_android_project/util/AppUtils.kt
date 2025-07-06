@@ -28,22 +28,18 @@ object AppUtils {
     }
 
     fun getUniqueCacheKey(requestName: String, uniqueIdentifier: String? = null): Int {
-        val requestId = when (requestName) {
-            REQUEST_NAME_CONTINENT -> REQUEST_ID_CONTINENT_DETAIL
-            REQUEST_NAME_COUNTRY -> REQUEST_ID_COUNTRY_DETAIL
-            REQUEST_NAME_COUNTRY_LIST -> REQUEST_ID_COUNTRY_LIST
-            else -> -1
-        }
-
-        // If no unique identifier provided, return just the request ID
+        // If no unique identifier provided, use the existing request ID mapping
         if (uniqueIdentifier == null) {
-            return requestId
+            return when (requestName) {
+                REQUEST_NAME_CONTINENT -> REQUEST_ID_CONTINENT_DETAIL
+                REQUEST_NAME_COUNTRY -> REQUEST_ID_COUNTRY_DETAIL
+                REQUEST_NAME_COUNTRY_LIST -> REQUEST_ID_COUNTRY_LIST
+                else -> -1
+            }
         }
 
-        // Combine request ID with hash of unique identifier
-        // Use upper 16 bits for request ID and lower 16 bits for identifier hash
-        val identifierHash = (uniqueIdentifier.hashCode() and 0xFFFF)
-        return (requestId shl 16) or identifierHash
+        // Create a unique key by combining requestName and identifier
+        return "$requestName:$uniqueIdentifier".hashCode()
     }
 
     // Mark as deprecated to encourage use of new method

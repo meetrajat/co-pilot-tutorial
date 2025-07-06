@@ -1,4 +1,7 @@
 1- Read all todos
 2- Check with co-pilot code which can be error prone and needs to be fixed or can throw exceptions
-3- Change logic for request key, currently it is using hardcoded value in repo class"
-4- check offline logic curently all classes are added but logic is hardcoded
+3- I have deployed python backend service using RENDER.COM, create muliple endpoint and integrate with the app - [Done]
+4- understand no-sql database and how to use it with the app, one database is created in Mongodb and api
+is creted in python to connect with it - [Done]
+5- support for cassandra is added in python backend service, need to add credentials in backed server so that it can connect to cassandra database.
+Also whitelist the ip address of the backend server in cassandra database so that it can connect to it.
